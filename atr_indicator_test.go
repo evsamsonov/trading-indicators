@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-const epsilon = 1e-6
-
 func TestAtrIndicator_Calculate(t *testing.T) {
 	series := NewTimeSeries()
 

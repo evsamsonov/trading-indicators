@@ -1,5 +1,7 @@
 package indicator
 
+const epsilon = 1e-6
+
 type TestCandle struct {
 	high  float64
 	low   float64
