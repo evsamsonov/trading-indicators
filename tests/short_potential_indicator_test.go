@@ -1,6 +1,7 @@
-package indicator
+package tests
 
 import (
+	indicator "github.com/evsamsonov/trading-indicators"
 	"github.com/evsamsonov/trading-indicators/mocks"
 	"github.com/stretchr/testify/assert"
 	"math"
@@ -11,7 +12,7 @@ import (
 func TestShortPotentialIndicator_Calculate(t *testing.T) {
 	atrIndicator := &mocks.Indicator{}
 
-	series := NewTimeSeries()
+	series := indicator.NewTimeSeries()
 
 	testCandles := []TestCandle{
 		{high: 23, low: 21.27, open: 21.3125, close: 22.1044, time: 1121979600},
@@ -20,7 +21,7 @@ func TestShortPotentialIndicator_Calculate(t *testing.T) {
 	}
 
 	for _, item := range testCandles {
-		candle := NewCandle(time.Unix(item.time, 0))
+		candle := indicator.NewCandle(time.Unix(item.time, 0))
 		candle.High = item.high
 		candle.Low = item.low
 		candle.Open = item.open
@@ -29,7 +30,7 @@ func TestShortPotentialIndicator_Calculate(t *testing.T) {
 		series.AddCandle(candle)
 	}
 
-	indicator := NewShortPotentialIndicator(series, atrIndicator)
+	indicator := indicator.NewShortPotentialIndicator(series, atrIndicator)
 
 	// На ATR 0
 	atrIndicator.On("Calculate", 1).Return(.0).Once()
@@ -50,10 +51,10 @@ func TestShortPotentialIndicator_Calculate(t *testing.T) {
 }
 
 func TestIntegrationShortPotentialIndicator_Calculate(t *testing.T) {
-	series := NewTimeSeries()
+	series := indicator.NewTimeSeries()
 
 	for _, item := range GetTestCandles() {
-		candle := NewCandle(time.Unix(item.time, 0))
+		candle := indicator.NewCandle(time.Unix(item.time, 0))
 		candle.High = item.high
 		candle.Low = item.low
 		candle.Open = item.open
@@ -62,9 +63,9 @@ func TestIntegrationShortPotentialIndicator_Calculate(t *testing.T) {
 		series.AddCandle(candle)
 	}
 
-	atrIndicator := NewAtrIndicator(series, 14)
+	atrIndicator := indicator.NewAtrIndicator(series, 14)
 
-	indicator := NewShortPotentialIndicator(series, atrIndicator)
+	indicator := indicator.NewShortPotentialIndicator(series, atrIndicator)
 
 	assert.Equal(t, .0, indicator.Calculate(0))
 	assert.Equal(t, .0, indicator.Calculate(11))

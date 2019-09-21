@@ -1,16 +1,17 @@
-package indicator
+package tests
 
 import (
+	indicator "github.com/evsamsonov/trading-indicators"
 	"math"
 	"testing"
 	"time"
 )
 
 func TestAtrIndicator_Calculate(t *testing.T) {
-	series := NewTimeSeries()
+	series := indicator.NewTimeSeries()
 
 	for _, item := range GetTestCandles() {
-		candle := NewCandle(time.Unix(item.time, 0))
+		candle := indicator.NewCandle(time.Unix(item.time, 0))
 		candle.High = item.high
 		candle.Low = item.low
 		candle.Open = item.open
@@ -30,7 +31,7 @@ func TestAtrIndicator_Calculate(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		atrIndicator := NewAtrIndicator(series, test.period)
+		atrIndicator := indicator.NewAtrIndicator(series, test.period)
 		atr := atrIndicator.Calculate(test.index)
 		expectedAtr := test.expected
 		if math.Abs(atr-expectedAtr) > epsilon {

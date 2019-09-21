@@ -18,7 +18,7 @@ func (p *ShortPotentialIndicator) Calculate(index int) float64 {
 		return val
 	}
 
-	if p.series.Length() == index + 1 {
+	if p.series.Length() == index+1 {
 		return 0
 	}
 
@@ -45,7 +45,7 @@ func (p *ShortPotentialIndicator) Calculate(index int) float64 {
 			break
 		}
 
-		if candle.Close - candle.Open > 0 && candle.High - maxLow > atr {
+		if candle.Close-candle.Open > 0 && candle.High-maxLow > atr {
 			break
 		}
 
