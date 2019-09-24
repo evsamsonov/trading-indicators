@@ -75,8 +75,3 @@ func TestIntegrationShortPotentialIndicator_Calculate(t *testing.T) {
 	assert.Less(t, math.Abs(indicator.Calculate(50) - 2.424), epsilon)
 }
 
-//func TestShortPotentialStrategy_init(t *testing.T) {
-//	strategy := ind.NewShortPotentialStrategy()
-//	strategy.
-//}
-
