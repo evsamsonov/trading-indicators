@@ -5,7 +5,7 @@ import (
 )
 
 // Описывает торговую свечу
-type candle struct {
+type Candle struct {
 	Time   time.Time
 	High   float64
 	Low    float64
@@ -15,6 +15,6 @@ type candle struct {
 }
 
 // Создает новую торговую свечу
-func NewCandle(time time.Time) *candle {
-	return &candle{Time: time}
+func NewCandle(time time.Time) *Candle {
+	return &Candle{Time: time}
 }

@@ -2,20 +2,20 @@ package indicator
 
 // Представляет последовательность торговых свечей
 type TimeSeries struct {
-	candles []*candle
+	candles []*Candle
 }
 
 // Создает пустую структуру для списка торговых свечей
 func NewTimeSeries() *TimeSeries {
 	ts := new(TimeSeries)
-	ts.candles = make([]*candle, 0)
+	ts.candles = make([]*Candle, 0)
 
 	return ts
 }
 
 // Добавляет торговую свечу в список.
 // Принимает свечи последовательно
-func (ts *TimeSeries) AddCandle(c *candle) bool {
+func (ts *TimeSeries) AddCandle(c *Candle) bool {
 	if c == nil {
 		return false
 	}
@@ -29,7 +29,7 @@ func (ts *TimeSeries) AddCandle(c *candle) bool {
 }
 
 // Возвращает последнюю свечу в последовательности
-func (ts *TimeSeries) LastCandle() *candle {
+func (ts *TimeSeries) LastCandle() *Candle {
 	if len(ts.candles) > 0 {
 		return ts.candles[len(ts.candles)-1]
 	}
@@ -43,6 +43,6 @@ func (ts *TimeSeries) Length() int {
 }
 
 // Возвращает указанную свечу
-func (ts *TimeSeries) Candle(index int) *candle {
+func (ts *TimeSeries) Candle(index int) *Candle {
 	return ts.candles[index]
 }

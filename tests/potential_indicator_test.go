@@ -1,7 +1,7 @@
 package tests
 
 import (
-	indicator "github.com/evsamsonov/trading-indicators"
+	ind "github.com/evsamsonov/trading-indicators"
 	"github.com/evsamsonov/trading-indicators/mocks"
 	"github.com/stretchr/testify/assert"
 	"math"
@@ -12,7 +12,7 @@ import (
 func TestShortPotentialIndicator_Calculate(t *testing.T) {
 	atrIndicator := &mocks.Indicator{}
 
-	series := indicator.NewTimeSeries()
+	series := ind.NewTimeSeries()
 
 	testCandles := []TestCandle{
 		{high: 23, low: 21.27, open: 21.3125, close: 22.1044, time: 1121979600},
@@ -21,7 +21,7 @@ func TestShortPotentialIndicator_Calculate(t *testing.T) {
 	}
 
 	for _, item := range testCandles {
-		candle := indicator.NewCandle(time.Unix(item.time, 0))
+		candle := ind.NewCandle(time.Unix(item.time, 0))
 		candle.High = item.high
 		candle.Low = item.low
 		candle.Open = item.open
@@ -30,7 +30,7 @@ func TestShortPotentialIndicator_Calculate(t *testing.T) {
 		series.AddCandle(candle)
 	}
 
-	indicator := indicator.NewShortPotentialIndicator(series, atrIndicator)
+	indicator := ind.NewPotentialIndicator(series, atrIndicator, ind.NewShortPotentialStrategy())
 
 	// На ATR 0
 	atrIndicator.On("Calculate", 1).Return(.0).Once()
@@ -51,10 +51,10 @@ func TestShortPotentialIndicator_Calculate(t *testing.T) {
 }
 
 func TestIntegrationShortPotentialIndicator_Calculate(t *testing.T) {
-	series := indicator.NewTimeSeries()
+	series := ind.NewTimeSeries()
 
 	for _, item := range GetTestCandles() {
-		candle := indicator.NewCandle(time.Unix(item.time, 0))
+		candle := ind.NewCandle(time.Unix(item.time, 0))
 		candle.High = item.high
 		candle.Low = item.low
 		candle.Open = item.open
@@ -63,9 +63,9 @@ func TestIntegrationShortPotentialIndicator_Calculate(t *testing.T) {
 		series.AddCandle(candle)
 	}
 
-	atrIndicator := indicator.NewAtrIndicator(series, 14)
+	atrIndicator := ind.NewAtrIndicator(series, 14)
 
-	indicator := indicator.NewShortPotentialIndicator(series, atrIndicator)
+	indicator := ind.NewPotentialIndicator(series, atrIndicator, ind.NewShortPotentialStrategy())
 
 	assert.Equal(t, .0, indicator.Calculate(0))
 	assert.Equal(t, .0, indicator.Calculate(11))
@@ -74,3 +74,9 @@ func TestIntegrationShortPotentialIndicator_Calculate(t *testing.T) {
 	assert.Equal(t, .0, indicator.Calculate(20))
 	assert.Less(t, math.Abs(indicator.Calculate(50) - 2.424), epsilon)
 }
+
+//func TestShortPotentialStrategy_init(t *testing.T) {
+//	strategy := ind.NewShortPotentialStrategy()
+//	strategy.
+//}
+
