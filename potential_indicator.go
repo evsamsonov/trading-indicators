@@ -10,17 +10,10 @@ type PotentialIndicator struct {
 
 // Описывает стратегию расчета потенциала продажа
 type PotentialStrategy interface {
-	// Инициализация
-	Init(candle *Candle, atr float64)
-
-	// Это последняя свеча
-	IsFinish(candle *Candle, atr float64) bool
-
-	// Обрабатывает свечу
-	Process(candle *Candle)
-
-	// Возвращает значение потенциала
-	Potential() float64
+	Init(candle *Candle, atr float64)			// Инициализация
+	IsFinish(candle *Candle, atr float64) bool 	// Это последняя свеча
+	Process(candle *Candle)					    // Обрабатывает свечу
+	Potential() float64							// Возвращает значение потенциала
 }
 
 // Создает индикатор потенциала продажи
@@ -59,43 +52,4 @@ func (p *PotentialIndicator) Calculate(index int) float64 {
 	}
 
 	return p.strategy.Potential()
-}
-
-// Стратегия для расчета потенциала продажи
-type ShortPotentialStrategy struct {
-	startOpen float64
-	maxLow float64
-	highLimit float64
-}
-
-func NewShortPotentialStrategy() *ShortPotentialStrategy {
-	return &ShortPotentialStrategy{}
-}
-
-func (s *ShortPotentialStrategy) Init(candle *Candle, atr float64) {
-	s.startOpen = candle.Open
-	s.maxLow = candle.Low
-	s.highLimit = candle.Open + atr
-}
-
-func (s *ShortPotentialStrategy) IsFinish(candle *Candle, atr float64) bool {
-	if candle.High > s.highLimit {
-		return true
-	}
-
-	if candle.Close-candle.Open > 0 && candle.High-s.maxLow > atr {
-		return true
-	}
-
-	return false
-}
-
-func (s *ShortPotentialStrategy) Process(candle *Candle) {
-	if s.maxLow > candle.Low {
-		s.maxLow = candle.Low
-	}
-}
-
-func (s *ShortPotentialStrategy) Potential() float64 {
-	return s.startOpen - s.maxLow
 }
