@@ -4,16 +4,16 @@ package indicator
 type PotentialIndicator struct {
 	series       *TimeSeries
 	atrIndicator Indicator
-	strategy 	 PotentialStrategy
+	strategy     PotentialStrategy
 	cache        map[int]float64
 }
 
 // Описывает стратегию расчета потенциала продажа
 type PotentialStrategy interface {
-	Init(candle *Candle, atr float64)			// Инициализация
-	IsFinish(candle *Candle, atr float64) bool 	// Это последняя свеча
-	Process(candle *Candle)					    // Обрабатывает свечу
-	Potential() float64							// Возвращает значение потенциала
+	Init(candle *Candle, atr float64)          // Инициализация
+	IsFinish(candle *Candle, atr float64) bool // Это последняя свеча
+	Process(candle *Candle)                    // Обрабатывает свечу
+	Potential() float64                        // Возвращает значение потенциала
 }
 
 // Создает индикатор потенциала продажи
@@ -40,7 +40,7 @@ func (p *PotentialIndicator) Calculate(index int) float64 {
 			return 0
 		}
 
-		if i == index + 1 {
+		if i == index+1 {
 			p.strategy.Init(candle, atr)
 		}
 

@@ -3,8 +3,8 @@ package indicator
 // Стратегия для расчета потенциала покупки
 type LongPotentialStrategy struct {
 	startOpen float64
-	maxHigh float64
-	lowLimit float64
+	maxHigh   float64
+	lowLimit  float64
 }
 
 func NewLongPotentialStrategy() *LongPotentialStrategy {

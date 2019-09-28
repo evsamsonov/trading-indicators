@@ -10,13 +10,13 @@ import (
 func TestShortPotentialStrategy_IsFinish(t *testing.T) {
 	strategy := ind.NewShortPotentialStrategy()
 
-	testes := []struct{
-		high float64
-		close float64
-		open float64
-		atr float64
+	testes := []struct {
+		high           float64
+		close          float64
+		open           float64
+		atr            float64
 		expectedResult bool
-	} {
+	}{
 		{high: 202.01, close: 0, open: 0, atr: 0, expectedResult: true},
 		{high: 202, close: 203, open: 202.99, atr: 1.9, expectedResult: true},
 		{high: 202, close: 203, open: 203, atr: 1.9, expectedResult: false},
@@ -43,10 +43,10 @@ func TestShortPotentialStrategy_IsFinish(t *testing.T) {
 func TestShortPotentialStrategy_Process(t *testing.T) {
 	strategy := ind.NewShortPotentialStrategy()
 
-	testes := []struct{
-		low float64
+	testes := []struct {
+		low         float64
 		expectedLow float64
-	} {
+	}{
 		{low: 199.99, expectedLow: 199.99},
 		{low: 200.01, expectedLow: 200},
 	}

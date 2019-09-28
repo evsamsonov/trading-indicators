@@ -3,7 +3,7 @@ package indicator
 // Стратегия для расчета потенциала продажи
 type ShortPotentialStrategy struct {
 	startOpen float64
-	maxLow float64
+	maxLow    float64
 	highLimit float64
 }
 
