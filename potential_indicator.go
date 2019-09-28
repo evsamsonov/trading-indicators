@@ -51,5 +51,6 @@ func (p *PotentialIndicator) Calculate(index int) float64 {
 		p.strategy.Process(candle)
 	}
 
-	return p.strategy.Potential()
+	p.cache[index] = p.strategy.Potential()
+	return p.cache[index]
 }
