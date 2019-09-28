@@ -10,44 +10,55 @@ import (
 )
 
 func TestShortPotentialIndicator_Calculate(t *testing.T) {
+	var indicator ind.Indicator
+
 	atrIndicator := &mocks.Indicator{}
+	potentialStrategy := &mocks.PotentialStrategy{}
 
 	series := ind.NewTimeSeries()
 
+	// Пустая серия
+	indicator = ind.NewPotentialIndicator(series, atrIndicator, potentialStrategy)
+	assert.Equal(t, .0, indicator.Calculate(0))
+
 	testCandles := []TestCandle{
-		{high: 23, low: 21.27, open: 21.3125, close: 22.1044, time: 1121979600},
-		{high: 23.31999, low: 20.15, open: 22.16, close: 23.21608, time: 1122238800},
-		{high: 23.2755, low: 19.0, open: 23.2755, close: 22.20585, time: 1122325200},
+		{time: 1121979600},
+		{time: 1122238800},
+		{time: 1122325200},
 	}
 
 	for _, item := range testCandles {
 		candle := ind.NewCandle(time.Unix(item.time, 0))
-		candle.High = item.high
-		candle.Low = item.low
-		candle.Open = item.open
-		candle.Close = item.close
-
 		series.AddCandle(candle)
 	}
 
-	indicator := ind.NewPotentialIndicator(series, atrIndicator, ind.NewShortPotentialStrategy())
-
 	// На ATR 0
+	indicator = ind.NewPotentialIndicator(series, atrIndicator, potentialStrategy)
 	atrIndicator.On("Calculate", 1).Return(.0).Once()
 	assert.Equal(t, .0, indicator.Calculate(0))
 
-	// На break по high limit
+	// На IsFinish
+	indicator = ind.NewPotentialIndicator(series, atrIndicator, potentialStrategy)
 	atrIndicator.On("Calculate", 1).Return(0.1).Once()
-	assert.Less(t, math.Abs(indicator.Calculate(0) - 2.01), epsilon)
+	potentialStrategy.On("Init", series.Candle(1), 0.1).Once()
+	potentialStrategy.On("IsFinish", series.Candle(1), 0.1).Return(true).Once()
+	potentialStrategy.On("Potential").Return(2.).Once()
+	assert.Equal(t, indicator.Calculate(0), 2.)
 
-	// На break по противополной свече
-	atrIndicator.On("Calculate", 1).Return(3.).Once()
-	assert.Less(t, math.Abs(indicator.Calculate(0) - 2.01), epsilon)
+	// С вызовом Process
+	indicator = ind.NewPotentialIndicator(series, atrIndicator, potentialStrategy)
+	atrIndicator.On("Calculate", 1).Return(0.1).Once()
+	potentialStrategy.On("Init", series.Candle(1), 0.1).Once()
+	potentialStrategy.On("IsFinish", series.Candle(1), 0.1).Return(false).Once()
+	potentialStrategy.On("Process", series.Candle(1)).Once()
 
-	// На обновление максимального low
-	atrIndicator.On("Calculate", 1).Return(3.5).Once()
-	atrIndicator.On("Calculate", 2).Return(3.5).Once()
-	assert.Less(t, math.Abs(indicator.Calculate(0) - 3.16), epsilon)
+	atrIndicator.On("Calculate", 2).Return(0.1).Once()
+	potentialStrategy.On("Init", series.Candle(2), 0.1).Once()
+	potentialStrategy.On("IsFinish", series.Candle(2), 0.1).Return(true).Once()
+
+	potentialStrategy.On("Potential").Return(2.).Once()
+	assert.Equal(t, indicator.Calculate(0), 2.)
+	assert.Equal(t, indicator.Calculate(0), 2.)   // Проверка кэша
 }
 
 func TestIntegrationShortPotentialIndicator_Calculate(t *testing.T) {

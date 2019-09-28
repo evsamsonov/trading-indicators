@@ -13,12 +13,12 @@ type PotentialStrategy struct {
 }
 
 // init provides a mock function with given fields: candle, atr
-func (_m *PotentialStrategy) init(candle *indicator.Candle, atr float64) {
+func (_m *PotentialStrategy) Init(candle *indicator.Candle, atr float64) {
 	_m.Called(candle, atr)
 }
 
 // isFinish provides a mock function with given fields: candle, atr
-func (_m *PotentialStrategy) isFinish(candle *indicator.Candle, atr float64) bool {
+func (_m *PotentialStrategy) IsFinish(candle *indicator.Candle, atr float64) bool {
 	ret := _m.Called(candle, atr)
 
 	var r0 bool
@@ -32,7 +32,7 @@ func (_m *PotentialStrategy) isFinish(candle *indicator.Candle, atr float64) boo
 }
 
 // potential provides a mock function with given fields:
-func (_m *PotentialStrategy) potential() float64 {
+func (_m *PotentialStrategy) Potential() float64 {
 	ret := _m.Called()
 
 	var r0 float64
@@ -46,6 +46,6 @@ func (_m *PotentialStrategy) potential() float64 {
 }
 
 // process provides a mock function with given fields: candle
-func (_m *PotentialStrategy) process(candle *indicator.Candle) {
+func (_m *PotentialStrategy) Process(candle *indicator.Candle) {
 	_m.Called(candle)
 }
