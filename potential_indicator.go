@@ -27,7 +27,7 @@ func (p *PotentialIndicator) Calculate(index int) float64 {
 		return val
 	}
 
-	if p.series.Length() == index+1 {
+	if p.series.Length() <= index+1 {
 		return 0
 	}
 
