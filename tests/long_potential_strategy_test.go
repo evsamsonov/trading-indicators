@@ -17,15 +17,15 @@ func TestLongPotentialStrategy_IsFinish(t *testing.T) {
 		atr            float64
 		expectedResult bool
 	}{
-		{low: 199.99, close: 0, open: 0, atr: 0, expectedResult: true},
-		{low: 202, close: 203, open: 203.01, atr: 1.99, expectedResult: true},
-		{low: 201, close: 203, open: 203, atr: 0.9, expectedResult: false},
+		{low: 198.99, close: 0, open: 0, atr: 0, expectedResult: true},
+		{low: 199, close: 203, open: 203.01, atr: 1.99, expectedResult: true},
+		{low: 199, close: 203, open: 203, atr: 0.9, expectedResult: false},
 		{low: 201, close: 203, open: 203.1, atr: 1.9, expectedResult: false},
 	}
 
 	initCandle := ind.NewCandle(time.Now())
-	initCandle.Open = 201
-	initCandle.High = 200
+	initCandle.Open = 200
+	initCandle.High = 201
 	strategy.Init(initCandle, 1)
 
 	for _, test := range testes {

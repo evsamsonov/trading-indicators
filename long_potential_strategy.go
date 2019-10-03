@@ -22,7 +22,7 @@ func (s *LongPotentialStrategy) IsFinish(candle *Candle, atr float64) bool {
 		return true
 	}
 
-	if candle.Close-candle.Open < 0 && candle.Low-s.maxHigh > atr {
+	if candle.Close-candle.Open < 0 && s.maxHigh-candle.Low > atr {
 		return true
 	}
 
