@@ -85,3 +85,28 @@ func TestIntegrationShortPotentialIndicator_Calculate(t *testing.T) {
 	assert.Equal(t, .0, indicator.Calculate(20))
 	assert.Less(t, math.Abs(indicator.Calculate(50) - 2.424), epsilon)
 }
+
+func TestIntegrationLongPotentialIndicator_Calculate(t *testing.T) {
+	series := ind.NewTimeSeries()
+
+	for _, item := range GetTestCandles() {
+		candle := ind.NewCandle(time.Unix(item.time, 0))
+		candle.High = item.high
+		candle.Low = item.low
+		candle.Open = item.open
+		candle.Close = item.close
+
+		series.AddCandle(candle)
+	}
+
+	atrIndicator := ind.NewAtrIndicator(series, 14)
+
+	indicator := ind.NewPotentialIndicator(series, atrIndicator, ind.NewLongPotentialStrategy())
+
+	assert.Equal(t, .0, indicator.Calculate(0))
+	assert.Equal(t, .0, indicator.Calculate(11))
+	assert.Less(t, math.Abs(indicator.Calculate(12) - 0.087), epsilon)
+	assert.Less(t, math.Abs(indicator.Calculate(15) - 4.3335), epsilon)
+	assert.Less(t, math.Abs(indicator.Calculate(33) - 3.177769), epsilon)
+	assert.Less(t, math.Abs(indicator.Calculate(54) - 1.38), epsilon)
+}
