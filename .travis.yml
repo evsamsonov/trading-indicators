@@ -1,1 +1,15 @@
 language: go
+
+env: GO111MODULE=on
+
+# Skip the install step. Don't go get dependencies. Only build with the code
+# in vendor/
+install: true
+
+before_script:
+  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.21.0
+  - go mod download
+
+script:
+  - $GOPATH/bin/golangci-lint run
+  - go test -v -race ./...
