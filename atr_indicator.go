@@ -1,19 +1,20 @@
 package indicator
 
 import (
+	"github.com/evsamsonov/trading-timeseries"
 	"math"
 )
 
 // Описывает индикатор Среднего истинного диапазона (ATR)
 type AtrIndicator struct {
-	series       *TimeSeries
+	series       *timeseries.TimeSeries
 	period       int
 	cache        map[int]float64
 	lastComputed int
 }
 
 // Создает новый индикатор
-func NewAtrIndicator(series *TimeSeries, period int) Indicator {
+func NewAtrIndicator(series *timeseries.TimeSeries, period int) Indicator {
 	return &AtrIndicator{series, period, make(map[int]float64), period - 1}
 }
 

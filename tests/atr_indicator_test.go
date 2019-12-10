@@ -2,22 +2,25 @@ package tests
 
 import (
 	indicator "github.com/evsamsonov/trading-indicators"
+	"github.com/evsamsonov/trading-timeseries"
+	"github.com/stretchr/testify/assert"
 	"math"
 	"testing"
 	"time"
 )
 
 func TestAtrIndicator_Calculate(t *testing.T) {
-	series := indicator.NewTimeSeries()
+	series := timeseries.New()
 
 	for _, item := range GetTestCandles() {
-		candle := indicator.NewCandle(time.Unix(item.time, 0))
+		candle := timeseries.NewCandle(time.Unix(item.time, 0))
 		candle.High = item.high
 		candle.Low = item.low
 		candle.Open = item.open
 		candle.Close = item.close
 
-		series.AddCandle(candle)
+		err := series.AddCandle(candle)
+		assert.Nil(t, err)
 	}
 
 	testCases := []struct {
