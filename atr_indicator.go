@@ -1,7 +1,7 @@
 package indicator
 
 import (
-	"github.com/evsamsonov/trading-timeseries"
+	"github.com/evsamsonov/trading-timeseries/timeseries"
 	"math"
 )
 

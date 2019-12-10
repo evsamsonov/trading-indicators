@@ -2,7 +2,7 @@ package tests
 
 import (
 	indicator "github.com/evsamsonov/trading-indicators"
-	"github.com/evsamsonov/trading-timeseries"
+	"github.com/evsamsonov/trading-timeseries/timeseries"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"testing"

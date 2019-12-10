@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"github.com/evsamsonov/trading-timeseries"
+	"github.com/evsamsonov/trading-timeseries/timeseries"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
