@@ -5,23 +5,20 @@ import (
 	"math"
 )
 
-// Описывает индикатор Среднего истинного диапазона (ATR)
-type AtrIndicator struct {
+// AverageTrueRange represents indicator to calculate Average True Range (ATR)
+// https://en.wikipedia.org/wiki/Average_true_range
+type AverageTrueRange struct {
 	series       *timeseries.TimeSeries
 	period       int
 	cache        map[int]float64
 	lastComputed int
 }
 
-// Создает новый индикатор
-func NewAtrIndicator(series *timeseries.TimeSeries, period int) Indicator {
-	return &AtrIndicator{series, period, make(map[int]float64), period - 1}
+func NewAverageTrueRange(series *timeseries.TimeSeries, period int) Indicator {
+	return &AverageTrueRange{series, period, make(map[int]float64), period - 1}
 }
 
-// Вычисляет значение ATR для указанной
-// по порядковому номеру свечи в серии (начиная с 0)
-// https://en.wikipedia.org/wiki/Average_true_range
-func (ind *AtrIndicator) Calculate(index int) float64 {
+func (ind *AverageTrueRange) Calculate(index int) float64 {
 	if index < ind.period-1 {
 		return 0
 	}
@@ -38,11 +35,9 @@ func (ind *AtrIndicator) Calculate(index int) float64 {
 	return ind.cache[index]
 }
 
-// Непосредственно выполняет вычисления ATR
-func (ind *AtrIndicator) doCalculate(i int) float64 {
+func (ind *AverageTrueRange) doCalculate(i int) float64 {
 	if i == ind.period-1 {
-		// Для первого значения сумма всех предыдущих значений
-		// истинного диапазона деленная на период
+		// For first index ATR equals sum of previous values divided by period
 		trueRangeSum := 0.0
 		for j := 0; j < ind.period; j++ {
 			trueRangeSum += ind.calculateTrueRange(j)
@@ -54,8 +49,7 @@ func (ind *AtrIndicator) doCalculate(i int) float64 {
 	return (ind.cache[i-1]*float64(ind.period-1) + ind.calculateTrueRange(i)) / float64(ind.period)
 }
 
-// Вычисляет значение истинного диапазона
-func (ind *AtrIndicator) calculateTrueRange(index int) float64 {
+func (ind *AverageTrueRange) calculateTrueRange(index int) float64 {
 	candle := ind.series.Candle(index)
 	highLowDiff := math.Abs(candle.High - candle.Low)
 	if index == 0 {

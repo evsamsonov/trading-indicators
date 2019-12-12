@@ -1,7 +1,6 @@
 package indicator
 
-// Описывает индерфейс индикатора. Единственный метод получает
-// идентификатор торговой свечи и возвращает подсчитанное значение индикатора
+// Indicator represents interface for indicators
 type Indicator interface {
-	Calculate(index int) float64
+	Calculate(index int) float64	// index of trading candle
 }

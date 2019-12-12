@@ -10,7 +10,6 @@ type TestCandle struct {
 	time  int64
 }
 
-// Общий список тестовых свечей для тестов индикаторов
 func GetTestCandles() []TestCandle {
 	return []TestCandle{
 		{high: 23, low: 21.27, open: 21.3125, close: 22.1044, time: 1121979600},

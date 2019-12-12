@@ -33,11 +33,11 @@ func TestAtrIndicator_Calculate(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		atrIndicator := NewAtrIndicator(series, test.period)
+		atrIndicator := NewAverageTrueRange(series, test.period)
 		atr := atrIndicator.Calculate(test.index)
 		expectedAtr := test.expected
 		if math.Abs(atr-expectedAtr) > epsilon {
-			t.Errorf("Полученное значение %f не равно ожидаемому %f", atr, expectedAtr)
+			t.Errorf("Result %f not equals expected %f", atr, expectedAtr)
 		}
 	}
 }
