@@ -1,7 +1,6 @@
-package tests
+package indicator
 
 import (
-	indicator "github.com/evsamsonov/trading-indicators"
 	"github.com/evsamsonov/trading-timeseries/timeseries"
 	"github.com/stretchr/testify/assert"
 	"math"
@@ -34,7 +33,7 @@ func TestAtrIndicator_Calculate(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		atrIndicator := indicator.NewAtrIndicator(series, test.period)
+		atrIndicator := NewAtrIndicator(series, test.period)
 		atr := atrIndicator.Calculate(test.index)
 		expectedAtr := test.expected
 		if math.Abs(atr-expectedAtr) > epsilon {

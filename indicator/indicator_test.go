@@ -1,4 +1,4 @@
-package tests
+package indicator
 
 const epsilon = 1e-6
 
