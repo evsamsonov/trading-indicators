@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func TestAtrIndicator_Calculate(t *testing.T) {
+func TestAverageTrueRange_Calculate(t *testing.T) {
 	series := timeseries.New()
 
 	for _, item := range GetTestCandles() {
