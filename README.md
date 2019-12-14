@@ -12,9 +12,7 @@ $ go get github.com/evsamsonov/trading-indicators/indicator
 
 ## Usage
 
-### Indicators
-
-All indicators requires trading data in **timeseries** structure https://github.com/evsamsonov/trading-timeseries
+All indicators requires trading data in [**timeseries**](https://github.com/evsamsonov/trading-timeseries) structure 
 
 ```go
 dataset := []struct {
@@ -45,9 +43,9 @@ for _, item := range dataset {
 }
 ```
 
-#### Average true range
+### Average True Range
 
-Indicator calculates Average True Range (ATR). More details https://en.wikipedia.org/wiki/Average_true_range 
+Indicator calculates [Average True Range](https://en.wikipedia.org/wiki/Average_true_range ) (ATR)
 
 ```go
 period := 2
