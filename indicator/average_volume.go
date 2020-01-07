@@ -2,8 +2,8 @@ package indicator
 
 import "github.com/evsamsonov/trading-timeseries/timeseries"
 
-// AverageVolume is a indicator to calculate average volume for given period
-// Current
+// AverageVolume is a indicator to calculate average volume
+// for given period using simple moving average
 type AverageVolume struct {
 	series       *timeseries.TimeSeries
 	period       int
