@@ -104,7 +104,7 @@ func GetTestSeries() *timeseries.TimeSeries {
 		candle.Close = item.close
 		candle.Volume = item.volume
 
-		series.AddCandle(candle)
+		_ = series.AddCandle(candle)
 	}
 
 	return series
