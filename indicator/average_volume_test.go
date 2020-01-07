@@ -1,7 +1,6 @@
 package indicator
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -15,9 +14,9 @@ func TestAverageVolume_Calculate(t *testing.T) {
 		index    int
 		expected float64
 	}{
-		//{name: "not enough data", period: 3, index: 2, expected: 0},
-		//{name: "period=3,index=3", period: 3, index: 3, expected: 3770033.33},
-		{name: "period=14,index=14", period: 14, index: 14, expected: 1851464.2857},
+		{name: "not enough data", period: 3, index: 1, expected: 0},
+		{name: "period=3,index=3", period: 3, index: 2, expected: 3770033.33},
+		{name: "period=14,index=13", period: 14, index: 13, expected: 1851464.2857},
 	}
 
 	for _, test := range tests {
@@ -29,7 +28,6 @@ func TestAverageVolume_Calculate(t *testing.T) {
 			} else {
 				assert.InEpsilon(t, test.expected, result, float64EqualityThreshold)
 			}
-			fmt.Printf("%f", result)
 		})
 	}
 }
