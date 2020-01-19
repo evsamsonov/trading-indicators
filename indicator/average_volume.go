@@ -10,11 +10,11 @@ type AverageVolume struct {
 	cache        map[int]float64
 }
 
-func NewAverageVolume(series *timeseries.TimeSeries, period int) Indicator {
+func NewAverageVolume(series *timeseries.TimeSeries, period int) *AverageVolume {
 	return &AverageVolume{
-		series,
-		period,
-		make(map[int]float64),
+		series: series,
+		period: period,
+		cache: make(map[int]float64),
 	}
 }
 
