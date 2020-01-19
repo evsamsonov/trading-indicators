@@ -23,8 +23,8 @@ dataset := []struct {
     Close  float64
     Volume int64
 }{
-    {Time: time.Unix(1121979600, 0), High: 23, Low: 21.27, Open: 21.3125, Close: 22.1044, Volume: 1},
-    {Time: time.Unix(1122238800, 0), High: 23.31999, Low: 22.15, Open: 22.15, Close: 23.21608, Volume: 1},
+    {Time: time.Unix(1121979600, 0), High: 23, Low: 21.27, Open: 21.3125, Close: 22.1044, Volume: 4604900},
+    {Time: time.Unix(1122238800, 0), High: 23.31999, Low: 22.15, Open: 22.15, Close: 23.21608, Volume: 4132600},
 }
 
 series := timeseries.New()
@@ -53,4 +53,13 @@ atrIndicator := indicator.NewAverageTrueRange(series, period)
 fmt.Println(atrIndicator.Calculate(1))   // 1.4727950000000014
 ```
 
+### Average Volume
+
+Indicator calculates Average Volume
+
+```go
+period := 2
+atrIndicator := indicator.NewAverageVolume(series, period)
+fmt.Println(atrIndicator.Calculate(1))  // 4368750
+```
 
