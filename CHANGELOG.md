@@ -1,5 +1,9 @@
 # Trading indicators release notes
 
+## 0.4.0
+
+* Add Exponential Moving Average indicator
+
 ## 0.3.1
 
 * Update CHANGELOG
