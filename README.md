@@ -2,7 +2,7 @@
 
 # Trading indicators
 
-Here will be set of trading indicators
+The set of trading indicators
 
 ## Installation
 
@@ -63,3 +63,12 @@ atrIndicator := indicator.NewAverageVolume(series, period)
 fmt.Println(atrIndicator.Calculate(1))  // 4368750
 ```
 
+### Exponential Moving Average
+
+Indicator calculates Exponential Moving Average
+
+```go
+smoothInterval := 2
+atrIndicator := indicator.NewAverageVolume(series, smoothInterval)
+fmt.Println(atrIndicator.Calculate(1))  // 22.84552
+```
