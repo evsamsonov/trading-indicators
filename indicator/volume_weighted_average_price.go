@@ -1,9 +1,10 @@
 package indicator
 
 import (
-	"github.com/evsamsonov/trading-timeseries/timeseries"
 	"sync"
 	"time"
+
+	"github.com/evsamsonov/trading-timeseries/timeseries"
 )
 
 const oneDay = time.Hour * 24

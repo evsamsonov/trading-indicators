@@ -2,11 +2,12 @@ package indicator
 
 import (
 	"fmt"
-	"github.com/evsamsonov/trading-timeseries/timeseries"
-	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
 	"time"
+
+	"github.com/evsamsonov/trading-timeseries/timeseries"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestVolumeWeightedAveragePrice_Calculated(t *testing.T) {
