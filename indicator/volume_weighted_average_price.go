@@ -35,7 +35,7 @@ func (v *VolumeWeightedAveragePrice) Calculate(index int) float64 {
 	volumeTotal := unit.volumeTotal
 	priceVolumeTotal := unit.priceVolumeTotal
 
-	for i := startIndex; ; i++ {
+	for i := startIndex; i <= index; i++ {
 		candle := v.series.Candle(i)
 		if !candle.Time.Truncate(oneDay).Equal(day) {
 			break
@@ -45,10 +45,8 @@ func (v *VolumeWeightedAveragePrice) Calculate(index int) float64 {
 		priceVolumeTotal = priceVolumeTotal + float64(candle.Volume)*typicalPrice
 		volumeTotal = volumeTotal + candle.Volume
 
-		vwap := priceVolumeTotal / float64(volumeTotal)
-
 		v.cache.Add(i, vwapUnit{
-			vwap:             vwap,
+			vwap:             priceVolumeTotal / float64(volumeTotal),
 			priceVolumeTotal: priceVolumeTotal,
 			volumeTotal:      volumeTotal,
 		})

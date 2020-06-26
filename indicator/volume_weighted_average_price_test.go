@@ -35,7 +35,6 @@ func TestVolumeWeightedAveragePrice_Calculate(t *testing.T) {
 			assert.InEpsilon(t, tt.want, vwap, float64EqualityThreshold)
 		})
 	}
-
 }
 
 func createCandle(date string, high, low, close float64, volume int64) *timeseries.Candle {
