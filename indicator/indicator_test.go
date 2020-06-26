@@ -8,12 +8,12 @@ import (
 const float64EqualityThreshold = 1e-6
 
 type TestCandle struct {
-	high  float64
-	low   float64
-	open  float64
-	close float64
-	time  int64
-	volume  int64
+	high   float64
+	low    float64
+	open   float64
+	close  float64
+	time   int64
+	volume int64
 }
 
 func GetTestCandles() []TestCandle {
