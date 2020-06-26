@@ -16,6 +16,7 @@ type VolumeWeightedAveragePrice struct {
 	cache  *vwapCache
 }
 
+// NewVolumeWeightedAveragePrice creates VolumeWeightedAveragePrice
 func NewVolumeWeightedAveragePrice(series *timeseries.TimeSeries) *VolumeWeightedAveragePrice {
 	return &VolumeWeightedAveragePrice{
 		series: series,
@@ -23,6 +24,7 @@ func NewVolumeWeightedAveragePrice(series *timeseries.TimeSeries) *VolumeWeighte
 	}
 }
 
+// Calculate returns VWAP value for candle with given index
 func (v *VolumeWeightedAveragePrice) Calculate(index int) float64 {
 	unit, ok := v.cache.Get(index)
 	if ok {
