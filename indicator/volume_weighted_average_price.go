@@ -26,7 +26,7 @@ func NewVolumeWeightedAveragePrice(series *timeseries.TimeSeries) *VolumeWeighte
 
 // Calculate returns VWAP value for candle with given index
 func (v *VolumeWeightedAveragePrice) Calculate(index int) float64 {
-	unit, ok := v.cache.Get(index)
+	unit, ok := v.cache.get(index)
 	if ok {
 		return unit.vwap
 	}
@@ -47,14 +47,14 @@ func (v *VolumeWeightedAveragePrice) Calculate(index int) float64 {
 		priceVolumeTotal = priceVolumeTotal + float64(candle.Volume)*typicalPrice
 		volumeTotal = volumeTotal + candle.Volume
 
-		v.cache.Add(i, vwapUnit{
+		v.cache.add(i, vwapUnit{
 			vwap:             priceVolumeTotal / float64(volumeTotal),
 			priceVolumeTotal: priceVolumeTotal,
 			volumeTotal:      volumeTotal,
 		})
 	}
 
-	unit, _ = v.cache.Get(index)
+	unit, _ = v.cache.get(index)
 	return unit.vwap
 }
 
@@ -65,7 +65,7 @@ func (v *VolumeWeightedAveragePrice) findLastCalculated(index int, day time.Time
 			return i + 1, vwapUnit{}
 		}
 
-		item, ok := v.cache.Get(i)
+		item, ok := v.cache.get(i)
 		if ok {
 			return i + 1, item
 		}
@@ -95,14 +95,14 @@ type vwapUnit struct {
 	volumeTotal      int64
 }
 
-func (v *vwapCache) Get(index int) (vwapUnit, bool) {
+func (v *vwapCache) get(index int) (vwapUnit, bool) {
 	v.mu.RLock()
 	defer v.mu.RUnlock()
 	val, ok := v.items[index]
 	return val, ok
 }
 
-func (v *vwapCache) Add(index int, item vwapUnit) {
+func (v *vwapCache) add(index int, item vwapUnit) {
 	v.mu.Lock()
 	defer v.mu.Unlock()
 	v.items[index] = item
