@@ -1,5 +1,9 @@
 # Trading indicators release notes
 
+## 0.5.0
+
+* Add Volume Weighted Average 
+
 ## 0.4.1
 
 * Add Exponential Moving Average to REAMDE
