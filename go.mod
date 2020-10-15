@@ -1,6 +1,6 @@
 module github.com/evsamsonov/trading-indicators
 
-go 1.13
+go 1.15
 
 require (
 	github.com/evsamsonov/trading-timeseries v0.2.0
