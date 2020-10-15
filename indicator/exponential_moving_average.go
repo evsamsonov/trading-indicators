@@ -2,6 +2,7 @@ package indicator
 
 import (
 	"errors"
+
 	"github.com/evsamsonov/trading-timeseries/timeseries"
 )
 

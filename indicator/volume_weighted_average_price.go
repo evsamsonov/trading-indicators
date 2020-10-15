@@ -44,8 +44,8 @@ func (v *VolumeWeightedAveragePrice) Calculate(index int) float64 {
 		}
 
 		typicalPrice := calcTypicalPrice(candle)
-		priceVolumeTotal = priceVolumeTotal + float64(candle.Volume)*typicalPrice
-		volumeTotal = volumeTotal + candle.Volume
+		priceVolumeTotal += float64(candle.Volume) * typicalPrice
+		volumeTotal += candle.Volume
 
 		v.cache.add(i, vwapUnit{
 			vwap:             priceVolumeTotal / float64(volumeTotal),

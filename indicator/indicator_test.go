@@ -1,8 +1,9 @@
 package indicator
 
 import (
-	"github.com/evsamsonov/trading-timeseries/timeseries"
 	"time"
+
+	"github.com/evsamsonov/trading-timeseries/timeseries"
 )
 
 const float64EqualityThreshold = 1e-6

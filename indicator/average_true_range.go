@@ -1,8 +1,9 @@
 package indicator
 
 import (
-	"github.com/evsamsonov/trading-timeseries/timeseries"
 	"math"
+
+	"github.com/evsamsonov/trading-timeseries/timeseries"
 )
 
 // AverageTrueRange represents indicator to calculate Average True Range (ATR)
@@ -43,7 +44,7 @@ func (ind *AverageTrueRange) doCalculate(i int) float64 {
 			trueRangeSum += ind.calculateTrueRange(j)
 		}
 
-		return float64(trueRangeSum) / float64(ind.period)
+		return trueRangeSum / float64(ind.period)
 	}
 
 	return (ind.cache[i-1]*float64(ind.period-1) + ind.calculateTrueRange(i)) / float64(ind.period)
