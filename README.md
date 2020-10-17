@@ -73,3 +73,29 @@ smoothInterval := 2
 atrIndicator := indicator.NewAverageVolume(series, smoothInterval)
 fmt.Println(atrIndicator.Calculate(1))  // 22.84552
 ```
+
+### Trend
+
+The indicator returns a trend direction. It bases on fast (with shorter period) and slow EMA. The third parameter of NewTrend allows setting max difference between fast and slow EMA when Calculate returns the flat.
+
+```go
+fastEMAIndicator, err := indicator.NewExponentialMovingAverage(series, 14)
+if err != nil {
+    log.Fatalln(err)
+}
+slowEMAIndicator, err := indicator.NewExponentialMovingAverage(series, 50)
+if err != nil {
+    log.Fatalln(err)
+}
+
+trendIndicator := indicator.NewTrend(fastEMAIndicator, slowEMAIndicator, 0.6)
+trend := trendIndicator.Calculate(1)
+switch trend {
+case indicator.UpTrend:
+    fmt.Println("Up trend")
+case indicator.DownTrend:
+    fmt.Println("Down trend")
+case indicator.FlatTrend:
+    fmt.Println("Flat trend")
+}
+```
