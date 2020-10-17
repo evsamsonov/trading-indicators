@@ -1,5 +1,9 @@
 # Trading indicators release notes
 
+## 0.6.0
+
+* Add Trend indicator
+
 ## 0.5.0
 
 * Add Volume Weighted Average 
