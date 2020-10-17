@@ -7,34 +7,34 @@ import (
 
 func TestTrend_Calculate(t *testing.T) {
 	tests := []struct {
-		name   string
-		fastVal   float64
-		slowVal   float64
-		want   	  float64
+		name    string
+		fastVal float64
+		slowVal float64
+		want    float64
 	}{
 		{
-			name: "up trend",
+			name:    "up trend",
 			fastVal: 1.61,
 			slowVal: 1.0,
-			want: UpTrend,
+			want:    UpTrend,
 		},
 		{
-			name: "down trend",
+			name:    "down trend",
 			fastVal: 1.0,
 			slowVal: 1.61,
-			want: DownTrend,
+			want:    DownTrend,
 		},
 		{
-			name: "flat trend",
+			name:    "flat trend",
 			fastVal: 1.0,
 			slowVal: 1.6,
-			want: FlatTrend,
+			want:    FlatTrend,
 		},
 		{
-			name: "flat trend 2",
+			name:    "flat trend 2",
 			fastVal: 1.6,
 			slowVal: 1.0,
-			want: FlatTrend,
+			want:    FlatTrend,
 		},
 	}
 
