@@ -1,8 +1,9 @@
 package indicator
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTrend_Calculate(t *testing.T) {
