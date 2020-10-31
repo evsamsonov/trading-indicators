@@ -10,41 +10,44 @@ import (
 type ExponentialMovingAverage struct {
 	series         *timeseries.TimeSeries
 	smoothInterval int
-	cache          map[int]float64
-	maxCacheIndex  int
+	maxIndex       int
+	cache          []float64
+	smooth         float64
 }
 
 func NewExponentialMovingAverage(series *timeseries.TimeSeries, smoothInterval int) (*ExponentialMovingAverage, error) {
 	if series.Length() == 0 {
 		return nil, errors.New("series is empty")
 	}
-
 	if smoothInterval < 0 {
 		return nil, errors.New("smoothInterval cannot be negative")
 	}
+	smooth := 2 / (float64(smoothInterval) + 1)
 
 	return &ExponentialMovingAverage{
 		series:         series,
 		smoothInterval: smoothInterval,
-		cache:          make(map[int]float64),
+		cache:          make([]float64, series.Length()),
+		smooth:         smooth,
 	}, nil
 }
 
-func (ma *ExponentialMovingAverage) Calculate(index int) float64 {
-	if ema, ok := ma.cache[index]; ok {
-		return ema
+func (a *ExponentialMovingAverage) Calculate(index int) float64 {
+	if index >= len(a.cache) {
+		a.cache = append(a.cache, 0)
+		a.cache = a.cache[:cap(a.cache)]
+	}
+	if a.cache[index] != 0 {
+		return a.cache[index]
+	}
+	if a.maxIndex == 0 {
+		a.cache[0] = a.series.Candle(0).Close
 	}
 
-	smooth := 2 / (float64(ma.smoothInterval) + 1)
-	if len(ma.cache) == 0 {
-		ma.cache[0] = ma.series.Candle(0).Close
+	for i := a.maxIndex + 1; i <= index; i++ {
+		a.cache[i] = a.smooth*a.series.Candle(i).Close + (1-a.smooth)*a.cache[i-1]
 	}
 
-	for i := ma.maxCacheIndex + 1; i <= index; i++ {
-		ma.cache[i] = smooth*ma.series.Candle(i).Close + (1-smooth)*ma.cache[i-1]
-	}
-
-	ma.maxCacheIndex = index
-
-	return ma.cache[index]
+	a.maxIndex = index
+	return a.cache[index]
 }

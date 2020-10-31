@@ -1,8 +1,11 @@
 package indicator
 
 import (
+	"sync"
 	"testing"
+	"time"
 
+	"github.com/evsamsonov/trading-timeseries/timeseries"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,5 +34,39 @@ func TestExponentialMovingAverage_Calculate(t *testing.T) {
 				assert.InEpsilon(t, test.expected, result, float64EqualityThreshold)
 			}
 		})
+	}
+}
+
+func TestExponentialMovingAverage_CalculateAfterAddCandle(t *testing.T) {
+	defer func() {
+		if r := recover(); r != nil {
+			t.Fatalf("%v", r)
+		}
+	}()
+	series := GetTestSeries()
+	indicator, err := NewExponentialMovingAverage(series, 3)
+	assert.Nil(t, err)
+
+	err = series.AddCandle(&timeseries.Candle{Time: time.Now()})
+	assert.Nil(t, err)
+	indicator.Calculate(series.Length() - 1)
+}
+
+func BenchmarkExponentialMovingAverage_Calculate(b *testing.B) {
+	series := GetTestSeries()
+	indicator, err := NewExponentialMovingAverage(series, 3)
+	assert.Nil(b, err)
+
+	b.ResetTimer()
+	var wg sync.WaitGroup
+	for i := 0; i < b.N; i++ {
+		for j := 0; j < 4; j++ {
+			wg.Add(1)
+			go func(j int) {
+				defer wg.Done()
+				indicator.Calculate(60 + j)
+			}(j)
+		}
+		wg.Wait()
 	}
 }

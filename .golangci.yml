@@ -1,7 +1,6 @@
 linters:
   enable:
     - gofmt
-    - asciicheck
     - bodyclose
     - dupl
     - gocognit

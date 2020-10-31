@@ -1,6 +1,7 @@
 package indicator
 
 import (
+	"log"
 	"time"
 
 	"github.com/evsamsonov/trading-timeseries/timeseries"
@@ -105,7 +106,10 @@ func GetTestSeries() *timeseries.TimeSeries {
 		candle.Close = item.close
 		candle.Volume = item.volume
 
-		_ = series.AddCandle(candle)
+		err := series.AddCandle(candle)
+		if err != nil {
+			log.Fatalf("Failed to add candle: %s", err)
+		}
 	}
 
 	return series
