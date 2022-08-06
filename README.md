@@ -70,7 +70,7 @@ Indicator calculates Exponential Moving Average
 
 ```go
 smoothInterval := 2
-atrIndicator := indicator.NewAverageVolume(series, smoothInterval)
+atrIndicator := indicator.NewExponentialMovingAverage(series, smoothInterval)
 fmt.Println(atrIndicator.Calculate(1))  // 22.84552
 ```
 
