@@ -1,0 +1,21 @@
+name: test
+on:
+  push:
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ ubuntu-latest ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15'
+      - name: Test
+        run: go test -gcflags='-N -l' -race -coverprofile=coverage.txt ./...
+      - name: Upload coverage to Codecov
+        run: bash <(curl -s https://codecov.io/bash)
+        
