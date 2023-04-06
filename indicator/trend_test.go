@@ -8,10 +8,11 @@ import (
 
 func TestTrend_Calculate(t *testing.T) {
 	tests := []struct {
-		name    string
-		fastVal float64
-		slowVal float64
-		want    float64
+		name                 string
+		fastVal              float64
+		slowVal              float64
+		flatMaxDiffInPercent bool
+		want                 float64
 	}{
 		{
 			name:    "up trend",
@@ -37,6 +38,20 @@ func TestTrend_Calculate(t *testing.T) {
 			slowVal: 1.0,
 			want:    FlatTrend,
 		},
+		{
+			name:                 "flat trend, diff in percent",
+			fastVal:              100.5,
+			slowVal:              100,
+			flatMaxDiffInPercent: true,
+			want:                 FlatTrend,
+		},
+		{
+			name:                 "up trend, diff in percent",
+			fastVal:              100.7,
+			slowVal:              100,
+			flatMaxDiffInPercent: true,
+			want:                 UpTrend,
+		},
 	}
 
 	for _, tt := range tests {
@@ -44,7 +59,12 @@ func TestTrend_Calculate(t *testing.T) {
 			slowEMAIndicator := &MockIndicator{}
 			fastEMAIndicator := &MockIndicator{}
 
-			ind := NewTrend(fastEMAIndicator, slowEMAIndicator, 0.6)
+			ind := NewTrend(
+				fastEMAIndicator,
+				slowEMAIndicator,
+				0.6,
+				TrendWithFlatMaxDiffInPercent(tt.flatMaxDiffInPercent),
+			)
 			fastEMAIndicator.On("Calculate", 1).Return(tt.fastVal)
 			slowEMAIndicator.On("Calculate", 1).Return(tt.slowVal)
 
