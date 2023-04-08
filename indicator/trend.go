@@ -10,6 +10,8 @@ const (
 
 type TrendOption func(*Trend)
 
+// TrendWithFlatMaxDiffInPercent allows to pass flatMaxDiff in percent.
+// The default value is false
 func TrendWithFlatMaxDiffInPercent(val bool) func(*Trend) {
 	return func(t *Trend) {
 		t.flatMaxDiffInPercent = val
