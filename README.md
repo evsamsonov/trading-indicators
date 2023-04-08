@@ -76,7 +76,7 @@ fmt.Println(atrIndicator.Calculate(1))  // 22.84552
 
 ### Trend
 
-The indicator returns a trend direction. It bases on fast (with shorter period) and slow EMA. The third parameter of NewTrend allows setting max difference between fast and slow EMA when Calculate returns the flat.
+The indicator returns a trend direction. It bases on fast (with shorter period) and slow EMA. The third parameter (flatMaxDiff) of NewTrend allows setting max difference between fast and slow EMA when Calculate returns the flat. Option TrendWithFlatMaxDiffInPercent allows to pass flatMaxDiff in percent
 
 ```go
 fastEMAIndicator, err := indicator.NewExponentialMovingAverage(series, 14)
@@ -88,7 +88,7 @@ if err != nil {
     log.Fatalln(err)
 }
 
-trendIndicator := indicator.NewTrend(fastEMAIndicator, slowEMAIndicator, 0.6)
+trendIndicator := indicator.NewTrend(fastEMAIndicator, slowEMAIndicator, 0.6, TrendWithFlatMaxDiffInPercent(false))
 trend := trendIndicator.Calculate(1)
 switch trend {
 case indicator.UpTrend:
