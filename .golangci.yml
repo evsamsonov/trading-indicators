@@ -7,7 +7,6 @@ linters:
     - goconst
     - gocritic
     - goimports
-    - golint
     - gosec
     - lll
     - nakedret

@@ -12,7 +12,7 @@ lint: ## Run golang lint using docker
 		-v ${GOPATH}/pkg/mod:/go/pkg/mod \
  		-v ${PWD}:/app \
  		-w /app \
-	    golangci/golangci-lint:v1.52.2 \
+	    golangci/golangci-lint:v1.64.8 \
 	    golangci-lint run -v --modules-download-mode=readonly
 
 test: ## Run tests
