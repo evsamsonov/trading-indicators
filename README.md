@@ -60,7 +60,7 @@ Indicator calculates Average Volume
 
 ```go
 period := 2
-atrIndicator := indicator.NewAverageVolume(series, period)
+atrIndicator := indicator.NewAverageVolume(series, period, nil)
 fmt.Println(atrIndicator.Calculate(1))  // 4368750
 ```
 
