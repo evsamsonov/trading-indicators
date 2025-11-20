@@ -39,21 +39,21 @@ func TestAverageVolume_Calculate(t *testing.T) {
 			name:     "with filter",
 			period:   3,
 			index:    5,
-			filter:   func(candle *timeseries.Candle) bool { return candle.High >= 23 },
+			filter:   func(i int, candle *timeseries.Candle) bool { return candle.High >= 23 },
 			expected: 3770033.33,
 		},
 		{
 			name:     "with filter, not enough data",
 			period:   4,
 			index:    5,
-			filter:   func(candle *timeseries.Candle) bool { return candle.High >= 23 },
+			filter:   func(i int, candle *timeseries.Candle) bool { return candle.High >= 23 },
 			expected: 0.,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			indicator := NewAverageVolume(series, tt.period, tt.filter)
+			indicator := NewAverageVolume(series, tt.period, WithAverageVolumeFilter(tt.filter))
 			result := indicator.Calculate(tt.index)
 			if tt.expected == 0 {
 				assert.Equal(t, tt.expected, result)

@@ -9,11 +9,11 @@ pre-push: lint test ## Run golang lint and test
 lint: ## Run golang lint using docker
 	go mod download
 	docker run --rm \
-		-v ${GOPATH}/pkg/mod:/go/pkg/mod \
+		-v $(shell go env GOPATH)/pkg/mod:/go/pkg/mod \
  		-v ${PWD}:/app \
  		-w /app \
-	    golangci/golangci-lint:v1.64.8 \
-	    golangci-lint run -v --modules-download-mode=readonly
+	    golangci/golangci-lint:v2.4 \
+	    golangci-lint run -v --modules-download-mode=readonly --fix
 
 test: ## Run tests
 	go test ./...

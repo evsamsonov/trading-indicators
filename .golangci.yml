@@ -1,18 +1,41 @@
+version: "2"
 linters:
   enable:
-    - gofmt
     - bodyclose
     - dupl
     - gocognit
     - goconst
     - gocritic
-    - goimports
     - gosec
     - lll
     - nakedret
     - nestif
     - prealloc
-    - stylecheck
+    - staticcheck
     - unconvert
     - unparam
     - whitespace
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+run:
+  timeout: 5m
+  modules-download-mode: readonly
