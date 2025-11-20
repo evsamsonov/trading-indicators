@@ -6,7 +6,15 @@ import (
 	"github.com/evsamsonov/trading-timeseries/timeseries"
 )
 
-type AverageVolumeFilterFunc func(candle *timeseries.Candle) bool
+type AverageVolumeOption func(a *AverageVolume)
+
+func WithAverageVolumeFilter(filter AverageVolumeFilterFunc) func(*AverageVolume) {
+	return func(t *AverageVolume) {
+		t.filter = filter
+	}
+}
+
+type AverageVolumeFilterFunc func(i int, candle *timeseries.Candle) bool
 
 // AverageVolume calculates a simple moving average of volume
 // over a given period, optionally filtering candles.
@@ -18,13 +26,20 @@ type AverageVolume struct {
 	filter AverageVolumeFilterFunc
 }
 
-func NewAverageVolume(series *timeseries.TimeSeries, period int, filter AverageVolumeFilterFunc) *AverageVolume {
-	return &AverageVolume{
+func NewAverageVolume(
+	series *timeseries.TimeSeries,
+	period int,
+	opts ...AverageVolumeOption,
+) *AverageVolume {
+	averageVolume := &AverageVolume{
 		series: series,
 		period: period,
 		cache:  make(map[int]float64),
-		filter: filter,
 	}
+	for _, opt := range opts {
+		opt(averageVolume)
+	}
+	return averageVolume
 }
 
 func (a *AverageVolume) Calculate(index int) float64 {
@@ -47,7 +62,7 @@ func (a *AverageVolume) Calculate(index int) float64 {
 		}
 
 		candle := a.series.Candle(i)
-		if a.filter != nil && !a.filter(candle) {
+		if a.filter != nil && !a.filter(i, candle) {
 			continue
 		}
 		volumeSum += float64(candle.Volume)
