@@ -52,6 +52,11 @@ func TestExponentialMovingAverage_Calculate_WithFilter(t *testing.T) {
 			filter: func(i int, candle *timeseries.Candle) bool {
 				return i != 1
 			},
+			// smooth = 2 / (3 + 1) = 0.5
+			// 0: 10
+			// 1: filtered, use previous value 10
+			// 2: 0.5 * 30 + 0.5 * 10 = 20
+			// 3: 0.5 * 40 + 0.5 * 20 = 30
 			expected: []float64{10, 10, 20, 30},
 		},
 		{
@@ -61,15 +66,19 @@ func TestExponentialMovingAverage_Calculate_WithFilter(t *testing.T) {
 			filter: func(i int, candle *timeseries.Candle) bool {
 				return i != 0
 			},
+			// smooth = 2 / (1 + 1) = 1
+			// 0: filtered, use 0
+			// 1: 1 * 20 + 0 * 10 = 20
+			// 2: 1 * 30 + 0 * 20 = 30
 			expected: []float64{0, 20, 30},
 		},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 			series := timeseries.New()
-			baseTime := time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC)
-			for i, closePrice := range test.closes {
+			baseTime := time.Unix(1, 0)
+			for i, closePrice := range tt.closes {
 				candle := timeseries.NewCandle(baseTime.Add(time.Duration(i) * time.Hour))
 				candle.Close = closePrice
 				series.AddCandle(candle)
@@ -77,17 +86,17 @@ func TestExponentialMovingAverage_Calculate_WithFilter(t *testing.T) {
 
 			ema, err := NewExponentialMovingAverage(
 				series,
-				test.smoothInterval,
-				WithExponentialMovingAverageFilter(test.filter),
+				tt.smoothInterval,
+				WithExponentialMovingAverageFilter(tt.filter),
 			)
 			assert.Nil(t, err)
 
 			for i := 0; i < series.Length(); i++ {
 				val := ema.Calculate(i)
-				if test.expected[i] == 0 {
-					assert.Equal(t, test.expected[i], val, "Index %d", i)
+				if tt.expected[i] == 0 {
+					assert.Equal(t, tt.expected[i], val, "Index %d", i)
 				} else {
-					assert.InEpsilon(t, test.expected[i], val, float64EqualityThreshold, "Index %d", i)
+					assert.InEpsilon(t, tt.expected[i], val, float64EqualityThreshold, "Index %d", i)
 				}
 			}
 		})
