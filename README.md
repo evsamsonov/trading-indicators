@@ -64,6 +64,20 @@ atrIndicator := indicator.NewAverageVolume(series, period)
 fmt.Println(atrIndicator.Calculate(1))  // 4368750
 ```
 
+#### Filter Option
+
+You can filter candles using `WithAverageVolumeFilter` option. Filtered candles are skipped during calculation, and the indicator looks back further to collect the required number of candles.
+
+```go
+// Skip candles with zero volume
+filter := func(i int, candle *timeseries.Candle) bool {
+    return candle.Volume > 0
+}
+period := 2
+avgVolume := indicator.NewAverageVolume(series, period, indicator.WithAverageVolumeFilter(filter))
+fmt.Println(avgVolume.Calculate(1))
+```
+
 ### Exponential Moving Average
 
 Indicator calculates Exponential Moving Average
@@ -72,6 +86,20 @@ Indicator calculates Exponential Moving Average
 smoothInterval := 2
 atrIndicator := indicator.NewExponentialMovingAverage(series, smoothInterval)
 fmt.Println(atrIndicator.Calculate(1))  // 22.84552
+```
+
+#### Filter Option
+
+You can filter candles using `WithExponentialMovingAverageFilter` option. When a candle is filtered out, the indicator uses the previous EMA value instead of recalculating.
+
+```go
+// Skip candles with low volume
+filter := func(i int, candle *timeseries.Candle) bool {
+    return candle.Volume > 1000000
+}
+smoothInterval := 2
+ema := indicator.NewExponentialMovingAverage(series, smoothInterval, indicator.WithExponentialMovingAverageFilter(filter))
+fmt.Println(ema.Calculate(1))
 ```
 
 ### Trend

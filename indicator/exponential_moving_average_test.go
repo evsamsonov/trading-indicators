@@ -81,7 +81,7 @@ func TestExponentialMovingAverage_Calculate_WithFilter(t *testing.T) {
 			for i, closePrice := range tt.closes {
 				candle := timeseries.NewCandle(baseTime.Add(time.Duration(i) * time.Hour))
 				candle.Close = closePrice
-				series.AddCandle(candle)
+				assert.NoError(t, series.AddCandle(candle))
 			}
 
 			ema, err := NewExponentialMovingAverage(
