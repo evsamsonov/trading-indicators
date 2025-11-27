@@ -7,11 +7,9 @@ import (
 	"github.com/evsamsonov/trading-timeseries/timeseries"
 )
 
-type ExponentialMovingAverageFilterFunc func(i int, candle *timeseries.Candle) bool
-
 type ExponentialMovingAverageOption func(e *ExponentialMovingAverage)
 
-func WithExponentialMovingAverageFilter(filter ExponentialMovingAverageFilterFunc) ExponentialMovingAverageOption {
+func WithExponentialMovingAverageFilter(filter FilterFunc) ExponentialMovingAverageOption {
 	return func(e *ExponentialMovingAverage) {
 		e.filter = filter
 	}
@@ -21,7 +19,7 @@ func WithExponentialMovingAverageFilter(filter ExponentialMovingAverageFilterFun
 type ExponentialMovingAverage struct {
 	series         *timeseries.TimeSeries
 	smoothInterval int
-	filter         ExponentialMovingAverageFilterFunc
+	filter         FilterFunc
 
 	smooth   float64
 	mu       sync.Mutex

@@ -54,6 +54,33 @@ atrIndicator := indicator.NewAverageTrueRange(series, period)
 fmt.Println(atrIndicator.Calculate(1))   // 1.4727950000000014
 ```
 
+### SMA Average True Range
+
+Indicator calculates Average True Range using a simple moving average of the true range values.
+
+```go
+period := 3
+smaAtr := indicator.NewSmaAverageTrueRange(series, period)
+fmt.Println(smaAtr.Calculate(3))  
+```
+
+#### Filter Option
+
+You can filter candles using `WithSmaAverageTrueRangeFilter` option. Filtered candles are skipped and the indicator looks back further to collect the required number of candles.
+
+```go
+filter := func(i int, candle *timeseries.Candle) bool {
+    return candle.Volume > 0
+}
+period := 3
+smaAtr := indicator.NewSmaAverageTrueRange(
+    series,
+    period,
+    indicator.WithSmaAverageTrueRangeFilter(filter),
+)
+fmt.Println(smaAtr.Calculate(3))
+```
+
 ### Average Volume
 
 Indicator calculates Average Volume

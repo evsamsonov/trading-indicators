@@ -8,13 +8,11 @@ import (
 
 type AverageVolumeOption func(a *AverageVolume)
 
-func WithAverageVolumeFilter(filter AverageVolumeFilterFunc) func(*AverageVolume) {
+func WithAverageVolumeFilter(filter FilterFunc) func(*AverageVolume) {
 	return func(t *AverageVolume) {
 		t.filter = filter
 	}
 }
-
-type AverageVolumeFilterFunc func(i int, candle *timeseries.Candle) bool
 
 // AverageVolume calculates a simple moving average of volume
 // over a given period, optionally filtering candles.
@@ -23,7 +21,7 @@ type AverageVolume struct {
 	period int
 	mu     sync.RWMutex
 	cache  map[int]float64
-	filter AverageVolumeFilterFunc
+	filter FilterFunc
 }
 
 func NewAverageVolume(

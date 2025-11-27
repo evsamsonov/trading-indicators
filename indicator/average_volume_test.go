@@ -14,7 +14,7 @@ func TestAverageVolume_Calculate(t *testing.T) {
 		name     string
 		period   int
 		index    int
-		filter   AverageVolumeFilterFunc
+		filter   FilterFunc
 		expected float64
 	}{
 		{
