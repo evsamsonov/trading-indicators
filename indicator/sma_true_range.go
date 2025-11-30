@@ -43,6 +43,10 @@ func NewSmaTrueRange(
 }
 
 func (a *SmaTrueRange) Calculate(index int) float64 {
+	if index < 0 || index >= a.series.Length() {
+		return 0
+	}
+
 	if index < a.period-1 {
 		return 0
 	}
@@ -56,11 +60,7 @@ func (a *SmaTrueRange) Calculate(index int) float64 {
 
 	trueRangeSum := 0.0
 	count := 0
-	for i := index; count < a.period; i-- {
-		if i < 0 {
-			return 0
-		}
-
+	for i := index; count < a.period && i >= 0; i-- {
 		candle := a.series.Candle(i)
 		if a.filter != nil && !a.filter(i, candle) {
 			continue
@@ -70,7 +70,11 @@ func (a *SmaTrueRange) Calculate(index int) float64 {
 		count++
 	}
 
-	avg := trueRangeSum / float64(a.period)
+	if count == 0 {
+		return 0
+	}
+
+	avg := trueRangeSum / float64(count)
 
 	a.mu.Lock()
 	a.cache[index] = avg
