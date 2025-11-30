@@ -42,7 +42,7 @@ func TestExponentialMovingAverage_Calculate_WithFilter(t *testing.T) {
 		name           string
 		closes         []float64
 		smoothInterval int
-		filter         ExponentialMovingAverageFilterFunc
+		filter         FilterFunc
 		expected       []float64
 	}{
 		{
