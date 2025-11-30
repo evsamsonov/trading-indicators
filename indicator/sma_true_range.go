@@ -7,18 +7,18 @@ import (
 	"github.com/evsamsonov/trading-timeseries/timeseries"
 )
 
-type SmaAverageTrueRangeOption func(*SmaAverageTrueRange)
+type SmaTrueRangeOption func(*SmaTrueRange)
 
-// WithSmaAverageTrueRangeFilter allows filtering candles when calculating SMA ATR.
-func WithSmaAverageTrueRangeFilter(filter FilterFunc) SmaAverageTrueRangeOption {
-	return func(a *SmaAverageTrueRange) {
+// WithSmaTrueRangeFilter allows filtering candles when calculating SMA ATR.
+func WithSmaTrueRangeFilter(filter FilterFunc) SmaTrueRangeOption {
+	return func(a *SmaTrueRange) {
 		a.filter = filter
 	}
 }
 
-// SmaAverageTrueRange calculates a simple moving average of the true range (TR)
+// SmaTrueRange calculates a simple moving average of the true range (TR)
 // over a given period, optionally filtering candles.
-type SmaAverageTrueRange struct {
+type SmaTrueRange struct {
 	series *timeseries.TimeSeries
 	period int
 	mu     sync.RWMutex
@@ -26,12 +26,12 @@ type SmaAverageTrueRange struct {
 	filter FilterFunc
 }
 
-func NewSmaAverageTrueRange(
+func NewSmaTrueRange(
 	series *timeseries.TimeSeries,
 	period int,
-	opts ...SmaAverageTrueRangeOption,
-) *SmaAverageTrueRange {
-	smaAtr := &SmaAverageTrueRange{
+	opts ...SmaTrueRangeOption,
+) *SmaTrueRange {
+	smaAtr := &SmaTrueRange{
 		series: series,
 		period: period,
 		cache:  make(map[int]float64),
@@ -42,7 +42,7 @@ func NewSmaAverageTrueRange(
 	return smaAtr
 }
 
-func (a *SmaAverageTrueRange) Calculate(index int) float64 {
+func (a *SmaTrueRange) Calculate(index int) float64 {
 	if index < a.period-1 {
 		return 0
 	}
@@ -79,7 +79,7 @@ func (a *SmaAverageTrueRange) Calculate(index int) float64 {
 	return avg
 }
 
-func (a *SmaAverageTrueRange) calculateTrueRange(index int) float64 {
+func (a *SmaTrueRange) calculateTrueRange(index int) float64 {
 	candle := a.series.Candle(index)
 	highLowDiff := math.Abs(candle.High - candle.Low)
 	if index == 0 {
