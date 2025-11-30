@@ -46,7 +46,6 @@ func (a *SmaTrueRange) Calculate(index int) float64 {
 	if index < 0 || index >= a.series.Length() {
 		return 0
 	}
-
 	if index < a.period-1 {
 		return 0
 	}
@@ -69,8 +68,7 @@ func (a *SmaTrueRange) Calculate(index int) float64 {
 		trueRangeSum += a.calculateTrueRange(i)
 		count++
 	}
-
-	if count == 0 {
+	if count < a.period {
 		return 0
 	}
 
